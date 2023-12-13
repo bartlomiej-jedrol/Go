@@ -1,7 +1,6 @@
-package main //booking
+package booking
 
 import (
-	"fmt"
 	"time"
 )
 
@@ -19,8 +18,9 @@ func Schedule(date string) time.Time {
 
 // HasPassed returns whether a date has passed.
 // "July 25, 2019 13:45:00"
+// "October 3, 2019 20:32:00"
 func HasPassed(date string) bool {
-	layout := "January 02, 2006 15:04:05"
+	layout := "January 2, 2006 15:04:05"
 
 	t, err := time.Parse(layout, date)
 	if err != nil {
@@ -34,21 +34,40 @@ func HasPassed(date string) bool {
 }
 
 // IsAfternoonAppointment returns whether a time is in the afternoon.
+// "Thursday, July 25, 2019 13:45:00"
 func IsAfternoonAppointment(date string) bool {
-	panic("Please implement the IsAfternoonAppointment function")
+	layout := "Monday, January 2, 2006 15:04:05"
+
+	t, err := time.Parse(layout, date)
+	if err != nil {
+		panic("Cannot parse the date.")
+	}
+
+	if t.Hour() >= 12 && t.Hour() < 18 {
+		return true
+	}
+	return false
 }
 
 // Description returns a formatted string of the appointment time.
+// "7/25/2019 13:45:00"
 func Description(date string) string {
-	panic("Please implement the Description function")
+	layoutDateIn := "1/2/2006 15:04:05"
+	layoutDateOut := "Monday, January 2, 2006, at 15:04"
+
+	t, err := time.Parse(layoutDateIn, date)
+	if err != nil {
+		panic("Cannot parse the date.")
+	}
+
+	return "You have an appointment on " + t.Format(layoutDateOut) + "."
 }
 
 // AnniversaryDate returns a Time with this year's anniversary.
 func AnniversaryDate() time.Time {
-	panic("Please implement the AnniversaryDate function")
-}
-
-func main() {
-	fmt.Println(Schedule("7/25/2019 13:45:00"))
-	fmt.Println(HasPassed("July 25, 2019 13:45:00"))
+	year, _, _ := time.Now().Date()
+	month := time.September
+	day := 15
+	anniversaryDate := time.Date(year, month, day, 0, 0, 0, 0, time.UTC)
+	return anniversaryDate
 }
